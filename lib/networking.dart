@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'dart:convert';
+import 'package:eventatt/user_model.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:http/http.dart' as http;
@@ -8,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Net {
   String scanned;
   final String apiurl = "http://18.222.254.209/users/";
-  var name, email, rgno, pno;
   Net(this.scanned) {
     log(scanned.toString());
   }
@@ -56,12 +57,54 @@ class Login {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString("token");
   }
+}
 
-// class LoginModel {
-//   String? token;
+class UserRequests {
+  String apiurl = "http://18.222.254.209/users";
 
-//   LoginModel(json) {
-//     token = json["tokens"]["access"]["token"];
-//   }
-// }
+  Future<dynamic> getUser(String qr) async {
+    http.Response response = await http.get(Uri.parse("$apiurl/qr/$qr"));
+    try {
+      if (response.statusCode == 200) {
+        String data = response.body;
+        var decodedData = jsonDecode(data);
+        return User.fromJson(decodedData);
+      }
+    } catch (exp) {
+      log(exp.toString());
+    }
+  }
+
+  Future<dynamic> markAttendance(String id, BuildContext context) async {
+    http.Response response = await http.patch(
+      Uri.parse("$apiurl/$id"),
+      body: {"isPresent": "true"},
+    );
+    try {
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Attendance marked.")));
+      }
+    } catch (exp) {
+      log(exp.toString());
+    }
+  }
+
+  Future<dynamic> markFood(String id, BuildContext context) async {
+    http.Response response = await http.patch(
+      Uri.parse("$apiurl/$id"),
+      body: {"hasEaten": "true"},
+    );
+    try {
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Refreshments delivered.")));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Refreshments not delivered.")));
+      }
+    } catch (exp) {
+      log(exp.toString());
+    }
+  }
 }

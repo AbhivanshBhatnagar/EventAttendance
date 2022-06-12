@@ -1,9 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:eventatt/attendance.dart';
 import 'package:eventatt/networking.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+
+import 'user_model.dart';
 
 class Scanner extends StatefulWidget {
   const Scanner({Key? key}) : super(key: key);
@@ -33,15 +36,40 @@ class _ScannerState extends State<Scanner> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
-        buildQrView(context),
-        Positioned(bottom: 10, child: qrtext())
-      ]),
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          buildQrView(context),
+          ElevatedButton(
+            child: Text(
+              barcode != null
+                  ? JwtDecoder.decode(barcode!.code.toString())['name']
+                  : 'Searching...',
+              style: const TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            onPressed: () async {
+              User user = await UserRequests().getUser(result!);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AttendanceScreen(
+                    jwt: result!,
+                    user: user,
+                  ),
+                ),
+              );
+            },
+          )
+        ],
+      ),
     );
   }
 
   Widget qrtext() => Container(
-        decoration: BoxDecoration(color: Colors.white24),
+        decoration: const BoxDecoration(color: Colors.white24),
         child: Text(barcode != null
             ? JwtDecoder.decode(barcode!.code.toString()).toString()
             : "Scan QR"),
@@ -65,9 +93,11 @@ class _ScannerState extends State<Scanner> {
         setState(() {
           this.barcode = barcode;
           result = barcode.code.toString();
-
-          Net(result!);
         });
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => AttendanceScreen(jwt: result!)));
       });
     });
   }

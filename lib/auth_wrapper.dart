@@ -11,15 +11,16 @@ class AuthWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: Login().loginToken(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            print(snapshot.data.toString());
-            return Scanner();
-          } else {
-            return LoginScreen();
-          }
-        });
+    return const Scanner();
+    // return FutureBuilder(
+    //     future: Login().loginToken(),
+    //     builder: (context, snapshot) {
+    //       if (snapshot.hasData) {
+    //         print(snapshot.data.toString());
+    //         return Scanner();
+    //       } else {
+    //         return LoginScreen();
+    //       }
+    //     });
   }
 }

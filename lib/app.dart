@@ -1,3 +1,4 @@
+import 'package:eventatt/attendance.dart';
 import 'package:eventatt/home.dart';
 import 'package:eventatt/scan.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,9 @@ class EventAttendance extends StatefulWidget {
 class _EventAttendanceState extends State<EventAttendance> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AuthWrapper(),
+      home: Scanner(),
     );
   }
 }
