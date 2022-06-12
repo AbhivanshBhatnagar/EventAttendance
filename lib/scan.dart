@@ -16,7 +16,8 @@ class _ScannerState extends State<Scanner> {
   final qrkey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   Barcode? barcode;
-  var result;
+  String? result;
+
   @override
   void dispose() {
     controller?.dispose();
@@ -45,6 +46,7 @@ class _ScannerState extends State<Scanner> {
             ? JwtDecoder.decode(barcode!.code.toString()).toString()
             : "Scan QR"),
       );
+
   Widget buildQrView(BuildContext context) => QRView(
         key: qrkey,
         onQRViewCreated: onQRViewCreated,
@@ -54,6 +56,7 @@ class _ScannerState extends State<Scanner> {
           borderRadius: 10,
         ),
       );
+
   void onQRViewCreated(QRViewController controller) {
     setState(() {
       this.controller = controller;
@@ -63,7 +66,7 @@ class _ScannerState extends State<Scanner> {
           this.barcode = barcode;
           result = barcode.code.toString();
 
-          Net(result);
+          Net(result!);
         });
       });
     });
