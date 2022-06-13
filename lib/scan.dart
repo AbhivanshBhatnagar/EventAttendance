@@ -52,7 +52,8 @@ class _ScannerState extends State<Scanner> {
             ),
             onPressed: () async {
               User user = await UserRequests().getUser(result!);
-              Navigator.push(
+              controller?.pauseCamera();
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => AttendanceScreen(

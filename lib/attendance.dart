@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:eventatt/networking.dart';
+import 'package:eventatt/scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -24,6 +25,18 @@ class AttendanceScreen extends StatelessWidget {
     bool hasEaten = _user.hasEaten!;
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text('Attendance'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Scanner(),
+              ),
+            ),
+          ),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
