@@ -21,11 +21,11 @@ class _ScannerState extends State<Scanner> {
   Barcode? barcode;
   String? result;
 
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   controller?.dispose();
+  //   super.dispose();
+  // }
 
   @override
   void initState() {
@@ -51,19 +51,22 @@ class _ScannerState extends State<Scanner> {
               ),
             ),
             onPressed: () async {
-              User user = await UserRequests().getUser(result!);
+              // log(JwtDecoder.decode(result as String).toString());
+              String rNo = await UserRequests().getUser(JwtDecoder.decode(
+                  barcode!.code.toString())['registerNumber']);
+              // log(user.isPresent.toString());
               controller?.pauseCamera();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => AttendanceScreen(
                     jwt: result!,
-                    user: user,
+                    rNo: rNo,
                   ),
                 ),
               );
             },
-          )
+          ),
         ],
       ),
     );

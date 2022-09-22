@@ -60,7 +60,7 @@ class Login {
 }
 
 class UserRequests {
-  String apiurl = "http://18.222.254.209/users";
+  String apiurl = "http://18.222.31.63/users";
 
   Future<dynamic> getUser(String qr) async {
     http.Response response = await http.get(Uri.parse("$apiurl/qr/$qr"));
@@ -68,7 +68,8 @@ class UserRequests {
       if (response.statusCode == 200) {
         String data = response.body;
         var decodedData = jsonDecode(data);
-        return User.fromJson(decodedData);
+        log(decodedData.toString());
+        return decodedData['registerNumber'];
       }
     } catch (exp) {
       log(exp.toString());

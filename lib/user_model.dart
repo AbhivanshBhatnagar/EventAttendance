@@ -1,13 +1,13 @@
-class User{
-    final String? id;
-    final bool? hasEaten;
-    final bool? isPresent;
+class User {
+  final String? rNo;
+  final bool? hasEaten;
+  final bool? isPresent;
 
-    User({this.id, this.hasEaten, this.isPresent});
+  User({this.rNo, this.hasEaten, this.isPresent});
 
-    factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'],
+      rNo: json['registerNumber'],
       hasEaten: json['hasEaten'],
       isPresent: json['isPresent'],
     );
