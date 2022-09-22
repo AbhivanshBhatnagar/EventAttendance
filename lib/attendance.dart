@@ -11,13 +11,20 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'user_model.dart';
 
 class AttendanceScreen extends StatelessWidget {
-  const AttendanceScreen({Key? key, required String jwt, required String rNo})
+  const AttendanceScreen(
+      {Key? key,
+      required String jwt,
+      required String rNo,
+      required bool presence})
       : _jwt = jwt,
         _rNo = rNo,
+        _presence = presence,
         super(key: key);
 
   final String _jwt;
   final String _rNo;
+  final bool _presence;
+
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> dec = JwtDecoder.decode(_jwt);
@@ -62,9 +69,9 @@ class AttendanceScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                // style: ElevatedButton.styleFrom(
-                //   primary: isPresent ? Colors.green : Colors.red,
-                // ),
+                style: ElevatedButton.styleFrom(
+                  primary: _presence ? Colors.green : Colors.red,
+                ),
                 child: const Text('Mark Attendance'),
                 onPressed: () async {
                   await UserRequests().markAttendance(_rNo, context);

@@ -68,8 +68,22 @@ class UserRequests {
       if (response.statusCode == 200) {
         String data = response.body;
         var decodedData = jsonDecode(data);
-        log(decodedData.toString());
+        // log(decodedData.toString());
         return decodedData['registerNumber'];
+      }
+    } catch (exp) {
+      log(exp.toString());
+    }
+  }
+
+  Future<dynamic> getAtt(String qr) async {
+    http.Response response = await http.get(Uri.parse("$apiurl/qr/$qr"));
+    try {
+      if (response.statusCode == 200) {
+        String data = response.body;
+        var decodedData = jsonDecode(data);
+        // log(decodedData.toString());
+        return decodedData['isPresent'];
       }
     } catch (exp) {
       log(exp.toString());
@@ -87,7 +101,8 @@ class UserRequests {
             .showSnackBar(const SnackBar(content: Text("Attendance marked.")));
       }
     } catch (exp) {
-      log(exp.toString());
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Attendance wasn't Marked. Please try again")));
     }
   }
 

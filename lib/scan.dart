@@ -54,6 +54,9 @@ class _ScannerState extends State<Scanner> {
               // log(JwtDecoder.decode(result as String).toString());
               String rNo = await UserRequests().getUser(JwtDecoder.decode(
                   barcode!.code.toString())['registerNumber']);
+              // log(rNo);
+              bool isPresent = await UserRequests().getAtt(rNo);
+              // log(isPresent.toString());
               // log(user.isPresent.toString());
               controller?.pauseCamera();
               Navigator.pushReplacement(
@@ -62,6 +65,7 @@ class _ScannerState extends State<Scanner> {
                   builder: (context) => AttendanceScreen(
                     jwt: result!,
                     rNo: rNo,
+                    presence: isPresent,
                   ),
                 ),
               );
