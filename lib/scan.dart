@@ -27,11 +27,12 @@ class _ScannerState extends State<Scanner> {
   //   super.dispose();
   // }
 
-  @override
-  void initState() {
-    controller?.resumeCamera();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // controller?.resumeCamera();
+  //   controller?.resumeCamera();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +60,7 @@ class _ScannerState extends State<Scanner> {
               // log(isPresent.toString());
               // log(user.isPresent.toString());
               controller?.pauseCamera();
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => AttendanceScreen(
@@ -94,9 +95,8 @@ class _ScannerState extends State<Scanner> {
       );
 
   void onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
     setState(() {
-      this.controller = controller;
-
       controller.scannedDataStream.listen((barcode) {
         setState(() {
           this.barcode = barcode;
@@ -107,6 +107,7 @@ class _ScannerState extends State<Scanner> {
         //     MaterialPageRoute(
         //         builder: (context) => AttendanceScreen(jwt: result!)));
       });
+      controller.resumeCamera();
     });
   }
 }

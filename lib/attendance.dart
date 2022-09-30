@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'scan.dart';
 import 'package:eventatt/networking.dart';
 import 'package:eventatt/scan.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,12 +35,14 @@ class AttendanceScreen extends StatelessWidget {
           title: Text('Attendance'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Scanner(),
-              ),
-            ),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Scanner(),
+                ),
+              );
+            },
           ),
         ),
         body: Padding(
@@ -70,7 +72,7 @@ class AttendanceScreen extends StatelessWidget {
               const SizedBox(height: 30),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: _presence ? Colors.green : Colors.red,
+                  backgroundColor: _presence ? Colors.green : Colors.red,
                 ),
                 child: const Text('Mark Attendance'),
                 onPressed: () async {
